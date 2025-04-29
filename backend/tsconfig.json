@@ -1,0 +1,18 @@
+// tsconfig.json (partial example)
+{
+  "compilerOptions": {
+    "target": "ES2016", // Or newer like ES2020
+    "module": "CommonJS",
+    "outDir": "./dist", // Where compiled JS goes
+    "rootDir": "./src", // Your TS source code directory
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true, // Needed for ORMs like TypeORM and validation libraries
+    "emitDecoratorMetadata": true // Needed for ORMs like TypeORM and validation libraries
+    // Add other options as needed, like "baseUrl", "paths" for module aliases
+  },
+  "include": ["src/**/*"], // Which files to include
+  "exclude": ["node_modules", "**/*.spec.ts"] // Which files to exclude
+}

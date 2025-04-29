@@ -1,0 +1,32 @@
+# ~/.gitignore
+
+# Dependency directories
+## Ignore node_modules in the backend project specifically
+backend/node_modules/
+# Add frontend/node_modules/ later if you create a frontend project
+
+# Build output
+## Ignore compiled TypeScript output in the backend project
+backend/dist/
+# Add frontend build output later if needed (e.g., frontend/build/)
+
+# Environment variables
+## Ignore .env files anywhere in the project - DO NOT COMMIT THESE
+**/.env
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files (optional, based on your editor)
+.vscode/
+.idea/
+
+
+
