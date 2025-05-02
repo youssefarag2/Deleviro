@@ -4,7 +4,7 @@
 ## Ignore node_modules in the backend project specifically
 backend/node_modules/
 # Add frontend/node_modules/ later if you create a frontend project
-
+node_modules
 # Build output
 ## Ignore compiled TypeScript output in the backend project
 backend/dist/
