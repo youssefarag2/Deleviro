@@ -4,6 +4,7 @@ import usersRepository from "../users/users.repository";
 import { RegisterUserDto } from "./dtos/register.dto";
 import { LoginUserDto } from "./dtos/login.dto";
 import config from "../../config";
+import { Role } from "@prisma/client";
 
 const SALT_ROUNDS = 10;
 
@@ -42,14 +43,15 @@ class AuthService {
     }
 
     const tokens = this.generateTokens({
-      userId: user.user_id /*, role: user.role */,
+      userId: user.user_id,
+      role: user.role /*, role: user.role */,
     });
 
     const { password_hash, ...userToReturn } = user;
     return { user: userToReturn, ...tokens };
   }
 
-  private generateTokens(payload: { userId: number }) {
+  private generateTokens(payload: { userId: number; role: Role }) {
     if (!config.jwt.secret) {
       throw new Error("JWT secret is not defined in configuration.");
     }
