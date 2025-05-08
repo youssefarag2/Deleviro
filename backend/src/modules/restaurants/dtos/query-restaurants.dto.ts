@@ -1,5 +1,11 @@
-import {IsOptional, IsString, IsInt, Min, Max, IsNumberString} from "class-validator";
+import {IsOptional, IsString, IsInt, Min, Max, IsNumberString, IsIn, IsEnum} from "class-validator";
 import {Type} from "class-transformer";
+
+
+export enum SortOrder {
+    ASC = 'asc',
+    DESC = 'desc',
+}
 
 export class QueryRestaurantsDto {
     @IsOptional()
@@ -24,5 +30,13 @@ export class QueryRestaurantsDto {
     @Max(100)
     limit?: number = 10; // Default to 10 items per page
 
+    @IsOptional()
+    @IsString()
+    @IsIn(['name', 'rating', 'price'])
+    sortBy?: string = 'name';
+
+    @IsOptional()
+    @IsEnum(SortOrder)
+    sortOrder?: SortOrder = SortOrder.ASC;
 
 }
