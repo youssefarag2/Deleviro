@@ -2,6 +2,7 @@ import express, { Request, Response, Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import authRoutes from "./modules/auth/auth.routes";
+import restaurantsRoutes from "./modules/restaurants/restaurants.routes";
 import { errorHandler } from "./middleware/error.handler";
 
 // Import error handlers later
@@ -18,6 +19,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/restaurants", restaurantsRoutes);
 
 app.use(errorHandler);
 
