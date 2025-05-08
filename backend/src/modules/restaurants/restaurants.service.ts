@@ -12,8 +12,8 @@ class RestaurantsService {
             is_active: true,
             ...(search && {
                 OR: [
-                    {name: {contains: search}},
-                    {description: {contains: search}}
+                    {name: {contains: search, mode: 'insensitive'}},
+                    {description: {contains: search, mode: 'insensitive'}},
                 ]
             }),
             ...(cuisine && {cuisine_type: {contains: cuisine, mode: 'insensitive'}}),
@@ -25,7 +25,7 @@ class RestaurantsService {
         const filedMap: {[key: string] : string} = {
             name: 'name',
             rating: 'average_rating',
-            price: 'price'
+            price: 'price_range'
         }
         const dbSortedField = filedMap[sortBy];
         if (dbSortedField) {
