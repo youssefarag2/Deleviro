@@ -34,6 +34,20 @@ class RestaurantRepository {
     }
 
     // ADD methods for create, update later
+
+    async create(restaurantData: Prisma.RestaurantCreateInput): Promise<Restaurant>{
+        return prisma.restaurant.create({
+            data: restaurantData
+        })
+    }
+
+    async update(restaurantId: number, updateData: Prisma.RestaurantUpdateInput): Promise<Restaurant>{
+        return prisma.restaurant.update({where: {restaurant_id: restaurantId}, data: updateData})
+    }
+
+    async delete(restaurantId: number): Promise<Restaurant>{
+        return prisma.restaurant.delete({where: {restaurant_id: restaurantId}})
+    }
 }
 
 export default new RestaurantRepository();
