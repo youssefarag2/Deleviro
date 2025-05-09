@@ -7,8 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-enum Role{
+enum Role {
   Customer
   Driver
   RESTAURANT_OWNER
@@ -22,7 +21,7 @@ model User {
   email         String   @unique
   phone_number  String?
   password_hash String
-  role          Role    @default(Customer)
+  role          Role     @default(Customer)
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
 
@@ -146,8 +145,8 @@ model Payment {
 }
 
 model Restaurant {
-  restaurant_id Int  @id @default(autoincrement())
-  owner_user_id Int?
+  restaurant_id Int @id @default(autoincrement())
+  owner_user_id Int
 
   name                 String
   description          String?
@@ -164,7 +163,7 @@ model Restaurant {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  owner User? @relation("RestaurantOwner", fields: [owner_user_id], references: [user_id], onDelete: SetNull, onUpdate: Cascade)
+  owner User @relation("RestaurantOwner", fields: [owner_user_id], references: [user_id], onDelete: Restrict, onUpdate: Cascade)
 
   menus      Menu[]
   menu_items MenuItem[]
