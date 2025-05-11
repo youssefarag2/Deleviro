@@ -6,7 +6,7 @@ import { LoginUserDto } from "./dtos/login.dto";
 class AuthController {
   async register(req: Request, res: Response, next: NextFunction) {
     try {
-      const userData: RegisterUserDto = req.body;
+      const userData = (req as any).validatedData as RegisterUserDto;
       const result = await authService.register(userData);
       res.status(201).json(result);
     } catch (error) {
@@ -17,7 +17,7 @@ class AuthController {
 
   async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const loginData: LoginUserDto = req.body;
+      const loginData = (req as any).validatedData as LoginUserDto;
       const result = await authService.login(loginData);
       // HINT: Send a success response (e.g., 200 OK) with user data and tokens.
       res.status(200).json(result);
