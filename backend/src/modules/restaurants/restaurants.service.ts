@@ -1,7 +1,7 @@
 import restaurantsRepository from "./restaurants.repository";
 import {QueryRestaurantsDto, SortOrder} from "./dtos/query-restaurants.dto";
 import {Prisma, Restaurant} from '@prisma/client';
-import prisma from "../../database/connect";
+import {CreateRestaurantDto} from "./dtos/create-restaurant.dto";
 
 class RestaurantsService {
     async listRestaurants(query: QueryRestaurantsDto) {
@@ -68,6 +68,53 @@ class RestaurantsService {
             throw new Error(`Restaurant not found.`);
         }
         return restaurant;
+    }
+
+    async createRestaurant(createRestaurantDto: CreateRestaurantDto, ownerUserId: number): Promise<Restaurant>{
+        // Business logic like checking for duplicate restaurant names by the same owner
+        const existing = await restaurantsRepository.findMany({
+            where :{name: createRestaurantDto.name, owner_user_id: ownerUserId}
+        })
+
+        if(existing.length >0){
+            throw new Error('You already own restaurant with this name.') // Will become 409 Conflict
+        }
+
+        // Prepare data for Prisma, including the nested create for addresses
+        const dataToCreate: Prisma.RestaurantCreateInput = {
+            name: createRestaurantDto.name,
+            description: createRestaurantDto.description,
+            cuisine_type: createRestaurantDto.cuisine_type,
+            logo_image_url: createRestaurantDto.logo_image_url,
+            header_image_url: createRestaurantDto.header_image_url,
+            price_range: createRestaurantDto.price_range,
+            operating_hours_info: createRestaurantDto.operating_hours_info,
+            contact_phone: createRestaurantDto.contact_phone,
+            contact_email: createRestaurantDto.contact_email,
+            is_active: createRestaurantDto.is_active ! == undefined ? createRestaurantDto.is_active : true,
+            owner:{
+                connect:{
+                    user_id: ownerUserId,
+                }
+            },
+            addresses:{
+                create: createRestaurantDto.addresses.map(addr => ({
+                    street_address1: addr.street_address1,
+                    street_address2: addr.street_address2,
+                    city: addr.city,
+                    state_province: addr.state_province,
+                    country: addr.country,
+                    latitude: addr.latitude,
+                    longitude: addr.longitude,
+                    address_label: addr.address_label,
+                    is_primary: addr.is_primary,
+                    // user_id is left null as this address belongs to the restaurant
+                })),
+            }
+
+        }
+        return await restaurantsRepository.create(dataToCreate);
+
     }
 
 }
